@@ -1,11 +1,11 @@
 import { User } from "../../domain/entities/User";
-import { UserReporitory } from "../../domain/repository/UserRepository";
+import { UserRepository } from "../../domain/repository/UserRepository";
 import { IEncryptServices } from "../services/IEncrypt";
 import { ServicesTokensUser } from "../services/ServicesTokens";
 
 export class CreateUserUseCase {
   constructor(
-    readonly userRepository: UserReporitory,
+    readonly userRepository: UserRepository,
     readonly options: IEncryptServices
   ) {}
   async run(

@@ -1,8 +1,8 @@
 import { User } from "../../domain/entities/User";
-import { UserReporitory } from "../../domain/repository/UserRepository";
+import { UserRepository } from "../../domain/repository/UserRepository";
 
 export class GetAllUserUseCase {
-  constructor(readonly userRepository: UserReporitory) {}
+  constructor(readonly userRepository: UserRepository) {}
   async run(): Promise<User[] | null> {
     try {
       const user = await this.userRepository.getAllUser();

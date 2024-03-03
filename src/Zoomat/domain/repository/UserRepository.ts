@@ -1,6 +1,6 @@
 import { User } from "../entities/User";
 
-export interface UserReporitory {
+export interface UserRepository {
   getUser(usuario: string, password: string): Promise<[User[], string] | null>;
   getAllUser(): Promise<User[] | null>;
   createUser(
