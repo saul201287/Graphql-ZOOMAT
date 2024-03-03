@@ -1,0 +1,11 @@
+
+POST http://localhost:3000/user/ HTTP/1.1
+Content-Type: application/json
+
+{
+"nombre": "saul",
+"password": "1234adc",
+"usuario": "adc",
+"correo": "223655@ids.upchiapas.edu.mx"
+}
+###

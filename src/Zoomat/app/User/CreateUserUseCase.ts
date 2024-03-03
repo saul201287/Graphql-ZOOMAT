@@ -16,6 +16,9 @@ export class CreateUserUseCase {
   ): Promise<User[] | null> {
     try {
       const newPassword = await this.options.encodePassword(password);
+      console.log(newPassword.length);
+      console.log(usuario.length);
+      
       const user = await this.userRepository.createUser(
         nombre,
         newPassword,

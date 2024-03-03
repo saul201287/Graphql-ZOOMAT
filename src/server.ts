@@ -4,11 +4,14 @@ import { Signale } from "signale";
 import * as dotenv from "dotenv";
 import helmet from "helmet"
 
+import { userRouter } from "./Zoomat/infraestructure/UserRouter";
+
 const app = express();
 app.use(helmet.hidePoweredBy());
 dotenv.config();
 app.use(morgan("dev"));
 app.use(express.json());
+app.use("/user", userRouter);
 
 const options = {
   secrets: ["([0-9]{4}-?)+"]
