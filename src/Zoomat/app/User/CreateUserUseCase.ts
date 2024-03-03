@@ -1,8 +1,13 @@
 import { User } from "../../domain/entities/User";
 import { UserReporitory } from "../../domain/repository/UserRepository";
+import { IEncryptServices } from "../services/IEncrypt";
+import { ServicesTokensUser } from "../services/ServicesTokens";
 
 export class CreateUserUseCase {
-  constructor(readonly userRepository: UserReporitory) {}
+  constructor(
+    readonly userRepository: UserReporitory,
+    readonly options: IEncryptServices
+  ) {}
   async run(
     nombre: string,
     password: string,
@@ -10,9 +15,10 @@ export class CreateUserUseCase {
     correo: string
   ): Promise<User[] | null> {
     try {
+      const newPassword = await this.options.encodePassword(password);
       const user = await this.userRepository.createUser(
         nombre,
-        password,
+        newPassword,
         usuario,
         correo
       );
