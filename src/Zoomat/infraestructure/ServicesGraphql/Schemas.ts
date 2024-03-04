@@ -6,7 +6,6 @@ type User{
     password: String
     usuario:String
     correo:String
-    urlhook:String
 }
 type Animal{
     id:ID

@@ -86,6 +86,8 @@ export class MysqlAnimalRepository implements AnimalsRepository {
     }
   }
   async createAnimal(animal: Animals): Promise<Animals | null> {
+    console.log(animal,"ss");
+    
     const sql =
       "INSERT INTO animales (id,nombre,edad,peso,especie,alimentacion,distribucion,categoria) VALUES (?, ?, ?, ?, ?, ?,?,?)";
     const params: any[] = [

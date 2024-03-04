@@ -31,6 +31,8 @@ export class Resolvers {
       },
       users:async () => {
         const users = await this.getAllUserCase.run();
+        console.log(users);
+        
         return users;
       },
       animals: async () => {
@@ -48,16 +50,19 @@ export class Resolvers {
     },
      Mutation: {
       createAnimal: async (__: void, args: any) => {
+        
         const animalNew = new Animals(
           0,
-          args.nombre,
-          args.edad,
-          args.peso,
-          args.especie,
-          args.alimentacion,
-          args.deistribucion,
-          args.categoria
+          args.animal.nombre,
+          args.animal.edad,
+          args.animal.peso,
+          args.animal.especie,
+          args.animal.alimentacion,
+          args.animal.distribucion,
+          args.animal.categoria
         );
+        console.log(animalNew,"ssas");
+
         const animal = await this.createAnimal.run(animalNew);
         return animal;
       },
