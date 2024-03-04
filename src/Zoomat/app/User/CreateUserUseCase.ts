@@ -1,7 +1,6 @@
 import { User } from "../../domain/entities/User";
 import { UserRepository } from "../../domain/repository/UserRepository";
 import { IEncryptServices } from "../services/IEncrypt";
-import { ServicesTokensUser } from "../services/ServicesTokens";
 
 export class CreateUserUseCase {
   constructor(
@@ -12,19 +11,16 @@ export class CreateUserUseCase {
     nombre: string,
     password: string,
     usuario: string,
-    correo: string
-  ): Promise<User[] | null> {
+    correo:string 
+      ): Promise<User | null> {
     try {
       const newPassword = await this.options.encodePassword(password);
-      console.log(newPassword.length);
-      console.log(usuario.length);
-      
       const user = await this.userRepository.createUser(
         nombre,
         newPassword,
         usuario,
         correo
-      );
+      );      
       return user;
     } catch (error) {
       console.error(error);

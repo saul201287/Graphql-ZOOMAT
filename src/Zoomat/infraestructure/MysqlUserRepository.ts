@@ -7,8 +7,16 @@ export class MysqlUserRepository implements UserRepository {
     usuario: string,
     password: string
   ): Promise<[User[], string] | null> {
-    let data: any = [User, ""];
-    return data;
+    const sql = "SELECT * FROM usuarios where usuario= ? ";
+    let params: any[] = [usuario];
+    try {
+      const [data]: any = await query(sql, params);
+      const dataUsers : any = Object.values(JSON.parse(JSON.stringify(data)));
+      return dataUsers
+    } catch (error) {
+      console.log(error);
+      return null;
+    }
   }
   async getAllUser(): Promise<User[] | null> {
     const sql = "SELECT * FROM usuarios ";
@@ -34,17 +42,25 @@ export class MysqlUserRepository implements UserRepository {
 
   async createUser(
     nombre: string,
-    correo: string,
+    password: string,
     usuario: string,
-    password: string
-  ): Promise<User[] | null> {
+    correo: string
+  ): Promise<User | null> {
     const sql =
       "INSERT INTO usuarios (id,nombre,password,usuario,correo) VALUES (?, ?, ?, ?, ?)";
-    const params: any[] = [0,nombre, password, usuario, correo];
+    const params: any[] = [0,nombre, password, usuario, correo ];
     try {
       const [result]: any = await query(sql, params);
-
-      return result;
+      console.log(result);
+      const user = new User(
+        result.insertId,
+        nombre,
+        password,
+        usuario,
+        correo
+      )
+      console.log(user);
+      return user;
     } catch (error) {
       console.log(error);
       return null;

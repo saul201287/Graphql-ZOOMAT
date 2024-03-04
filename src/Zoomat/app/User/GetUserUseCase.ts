@@ -16,16 +16,28 @@ export class GetUserUseCase {
     try {
       const user = await this.userRepository.getUser(usuario, password);
       if (user != null) {
-        let password2 = user[0];
-        console.log(password2);
-        //const pass = await this.options.compareTo(password, password2);
-        let tokenNew = await this.webToken.run(
-          usuario,
-          String(process.env.SECRET_TOKEN),
-          100 * 100
-        );
-        const data: any = [user, tokenNew];
-        return data;
+        let user1: Object = user[0];
+        if ("password" in user1) {
+          let password2 = user1.password;
+          if (typeof password2 == "string") {
+            const pass = await this.options.compareTo(password, password2);
+            if (pass) {
+              let tokenNew = await this.webToken.run(
+                usuario,
+                String(process.env.SECRET_TOKEN),
+                100 * 100
+              );
+              const data: any = [user, tokenNew];
+              return data;
+            } else {
+              return null;
+            }
+          } else {
+            return null;
+          }
+        } else {
+          return null;
+        }
       } else {
         return null;
       }

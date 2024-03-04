@@ -4,7 +4,7 @@ export class User{
     readonly nombre: string,
     readonly password: string,
     readonly ususario: string,
-    readonly correo: string
+    readonly correo: string,
     ){}
 }
 

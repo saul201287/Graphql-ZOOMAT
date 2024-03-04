@@ -6,15 +6,12 @@ export class CreateUserController {
 
   async run(req: Request, res: Response) {
     const data = req.body;
-
     try {
       const user: any = await this.createUserUseCase.run(
         data.nombre,
         data.password,
         data.usuario,
-        data.correo
-      );
-      console.log(user.user);
+        data.correo      );
 
       if (user)
         res
@@ -23,10 +20,11 @@ export class CreateUserController {
           .send({
             status: "success",
             data: {
-              nombre: user?.user.nombre,
-              password: user?.user.password,
-              usuario: user?.user.usuario,
-              correo: user?.user.correo,
+              id: user?.id,
+              nombre: user?.nombre,
+              password: user?.password,
+              usuario: user?.usuario,
+              correo: user?.correo,
             },
           });
       else
@@ -35,6 +33,8 @@ export class CreateUserController {
           data: "NO fue posible agregar el registro",
         });
     } catch (error) {
+      console.log(error);
+
       res.status(500).send({
         status: "error",
         data: "Ocurrio un error",
