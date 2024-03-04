@@ -24,7 +24,7 @@ export class Resolvers {
     readonly deleteAnimal: DeleteAnimalUseCase
   ) {}
   resolvers: any = {
-    query: {
+    Query: {
       user: async (__:void,args:any) => {
         const user = await this.getUserUseCase.run(args.usuario, args.password);
         return user;
@@ -46,7 +46,7 @@ export class Resolvers {
         return animal;
       },
     },
-    Mutation: {
+     Mutation: {
       createAnimal: async (__: void, args: any) => {
         const animalNew = new Animals(
           0,
@@ -82,10 +82,9 @@ export class Resolvers {
         const msg = await this.deleteAnimal.run(args.id);
         return msg;
       },
-      webhuuk: (__: void, args: any) => {
-
-        return "";
-      },
+      // webhuuk: (__: void, args: any) => {
+      //   return "";
+      // },
     },
   };
 }

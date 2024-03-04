@@ -6,7 +6,7 @@ import helmet from "helmet";
 import { ApolloServer } from "@apollo/server";
 import { startStandaloneServer } from "@apollo/server/standalone";
 import { typeDefs } from "./Zoomat/infraestructure/ServicesGraphql/Schemas";
-import { Resolvers } from "./Zoomat/infraestructure/ServicesGraphql/Resolvers";
+import { ResolversGraph } from "./Zoomat/infraestructure/Dependencies";
 import { userRouter } from "./Zoomat/infraestructure/UserRouter";
 
 const app = express();
@@ -22,7 +22,7 @@ const options = {
 
 const logger = new Signale(options);
 //const port: number | undefined = process.env.PORT;
-let resolvers = Resolvers.prototype.resolvers;
+let resolvers = ResolversGraph.resolvers;
 const server = new ApolloServer({
   typeDefs,
   resolvers,

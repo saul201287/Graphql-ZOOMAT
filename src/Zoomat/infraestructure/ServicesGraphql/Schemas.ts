@@ -1,4 +1,5 @@
-export const typeDefs = `
+import { gql } from "apollo-server-express";
+export const typeDefs = gql `
 type User{
     id:ID
     nombre: String
@@ -24,7 +25,7 @@ type Query{
     animal(id:ID): Animal
     animalByEspecie(especie:String):Animal
 }
-type animalInput {
+input animalInput {
     nombre:String 
     edad:Int
     peso: Int
@@ -33,17 +34,17 @@ type animalInput {
     distribucion:String
     categoria:String
 }
-type userInput {
+input userInput {
     nombre: String
     password: String
     usuario: String
     correo: String
 }
-type animalPutInput{
+input animalPutInput{
     id: ID
     categoria: String
 }
-type animalEdadInput{
+input animalEdadInput{
     nombre:String
     edad: Int
 }
