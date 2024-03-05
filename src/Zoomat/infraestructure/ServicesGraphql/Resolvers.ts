@@ -23,40 +23,42 @@ export class Resolvers {
     readonly putAnimalEdad: putAnimalEdadUseCase,
     readonly deleteAnimal: DeleteAnimalUseCase
   ) {}
+  public token:string =""
+  
   resolvers: any = {
     Query: {
-      user: async (__:void,args:any) => {
-        console.log(args);
-        
-        const user = await this.getUserUseCase.run(args.usuario, args.password);
-        console.log(user);
-        
-        return user;
+      user: async (__: void, args: any) => {
+        const user: any = await this.getUserUseCase.run(
+          args.usuario,
+          args.password
+        );
+        if (user) {
+          this.token = user[1]
+        }
+        return { user: user[0], token: user[1] };
       },
-      users:async () => {
+      users: async () => {
         const users = await this.getAllUserCase.run();
-        console.log(users);
-        
+        console.log(this.token);
         return users;
       },
       animals: async () => {
         const animals = await this.getAllAnimals.run();
-        return {msg:animals};
+        return animals;
       },
       animal: async (__: void, args: any) => {
-        const [animal]:any = await this.getByIdAnimal.run(args.id);
-        
+        const [animal]: any = await this.getByIdAnimal.run(args.id);
+
         return animal;
       },
       animalByEspecie: async (__: void, args: any) => {
-        const [animal]:any = await this.getAnimalByEspecie.run(args.especie);
+        const [animal]: any = await this.getAnimalByEspecie.run(args.especie);
         console.log(animal);
         return animal;
       },
     },
-     Mutation: {
+    Mutation: {
       createAnimal: async (__: void, args: any) => {
-        
         const animalNew = new Animals(
           0,
           args.animal.nombre,
@@ -70,22 +72,27 @@ export class Resolvers {
         const animal = await this.createAnimal.run(animalNew);
         return animal;
       },
-      createUser: async(__: void, args: any) => {
-        
+      createUser: async (__: void, args: any) => {
         const user = await this.createUser.run(
           args.user.nombre,
           args.user.password,
           args.user.usuario,
           args.user.correo
-        );        
+        );
         return user;
       },
       putAnimalEdad: async (__: void, args: any) => {
-        const animal = await this.putAnimalEdad.run(args.nombre, args.edad);
+        const animal = await this.putAnimalEdad.run(
+          args.animal.nombre,
+          args.animal.edad
+        );
         return animal;
       },
       putAnimalCategory: async (__: void, args: any) => {
-        const animal = await this.putAnimalCategory.run(args.animal.id, args.animal.categoria);
+        const animal = await this.putAnimalCategory.run(
+          args.animal.id,
+          args.animal.categoria
+        );
         return animal;
       },
       deleteAnimal: async (__: void, args: any) => {

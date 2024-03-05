@@ -7,6 +7,10 @@ type User{
     usuario:String
     correo:String
 }
+type Login{
+    user:User
+    token:String
+}
 type Animal{
     id:ID
     nombre:String
@@ -18,7 +22,7 @@ type Animal{
     categoria:String
 }
 type Query{
-    user(usuario:String, password:String): User
+    user(usuario:String, password:String):Login
     users: [User]
     animals: [Animal]
     animal(id:ID): Animal
@@ -52,7 +56,7 @@ input animalEdadInput{
 type Mutation{
     createAnimal(animal:animalInput):Animal
     createUser(user: userInput):User
-    putAnimalEdad(animal:animalEdadInput):Animal
+    putAnimalEdad(animal:animalEdadInput):String
     putAnimalCategory(animal:animalPutInput):String
     deleteAnimal(id:Int):String
 }

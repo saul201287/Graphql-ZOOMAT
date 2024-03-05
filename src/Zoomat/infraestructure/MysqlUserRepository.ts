@@ -10,11 +10,8 @@ export class MysqlUserRepository implements UserRepository {
     const sql = "SELECT * FROM usuarios where usuario= ? ";
     let params: any[] = [usuario];    
     try {
-      const data = await query(sql, params);
-      console.log(data?.[0]);
-      
+      const [data]:any = await query(sql, params);      
       const dataUsers : any = Object.values(JSON.parse(JSON.stringify(data)));
-      console.log(dataUsers);
       
       return dataUsers
     } catch (error) {

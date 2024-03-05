@@ -3,7 +3,7 @@ import { AnimalsRepository } from "../../domain/repository/AnimalsRepository";
 
 export class putAnimalEdadUseCase {
   constructor(readonly animalsRepository: AnimalsRepository) {}
-  async run(nombre: string, edad: number): Promise<Animals | null> {
+  async run(nombre: string, edad: number): Promise<String | null> {
     try {
       const animal = await this.animalsRepository.putAnimalEdad(nombre, edad);
       return animal;

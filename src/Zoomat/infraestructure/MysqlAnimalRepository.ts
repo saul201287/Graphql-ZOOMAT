@@ -61,12 +61,15 @@ export class MysqlAnimalRepository implements AnimalsRepository {
       return null;
     }
   }
-  async putAnimalEdad(nombre: string, edad: number): Promise<Animals | null> {
+  async putAnimalEdad(nombre: string, edad: number): Promise<String | null> {
     const sql = "UPDATE animales SET edad=? where nombre = ?";
     try {
       const [data]: any = await query(sql, [edad, nombre]);
-      const dataAnimals: any = Object.values(JSON.parse(JSON.stringify(data)));
-      return dataAnimals;
+      if (data.changedRows>0) {
+        return "Elemto modificado"
+      } else {
+        return " Elemento no encontrado"
+      }  
     } catch (error) {
       console.error(error);
       return null;

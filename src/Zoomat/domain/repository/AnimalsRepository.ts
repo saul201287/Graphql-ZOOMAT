@@ -4,7 +4,7 @@ export interface AnimalsRepository {
   getAll(): Promise<Animals[] | null>;
   getById(id:number,): Promise<Animals | null>;
   getEspecie(especie: string): Promise<Animals[] | null>;
-  putAnimalEdad(nombre: string, edad: number): Promise<Animals | null>;
+  putAnimalEdad(nombre: string, edad: number): Promise<String | null>;
   createAnimal(animal: Animals): Promise<Animals | null>;
   putAnimalCategory(
     id: number,
