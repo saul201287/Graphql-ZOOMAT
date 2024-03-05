@@ -13,14 +13,19 @@ export class GetUserUseCase {
     usuario: string,
     password: string
   ): Promise<[User[], string] | null> {
+    
+    
     try {
       const user = await this.userRepository.getUser(usuario, password);
+      console.log(user);
       if (user != null) {
         let user1: Object = user[0];
         if ("password" in user1) {
           let password2 = user1.password;
           if (typeof password2 == "string") {
             const pass = await this.options.compareTo(password, password2);
+            console.log(pass);
+            
             if (pass) {
               let tokenNew = await this.webToken.run(
                 usuario,

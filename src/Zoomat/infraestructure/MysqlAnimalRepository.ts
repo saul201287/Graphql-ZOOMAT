@@ -30,6 +30,7 @@ export class MysqlAnimalRepository implements AnimalsRepository {
     const sql = "SELECT * FROM animales where id = ?";
     try {
       const [data]: any = await query(sql, [id]);
+   
       const dataAnimals: any = Object.values(JSON.parse(JSON.stringify(data)));
       return dataAnimals;
     } catch (error) {
@@ -74,12 +75,16 @@ export class MysqlAnimalRepository implements AnimalsRepository {
   async putAnimalCategory(
     id: number,
     categoria: string
-  ): Promise<Animals | null> {
+  ): Promise<String | null> {
     const sql = "UPDATE animales SET categoria=? where id = ?";
     try {
       const [data]: any = await query(sql, [categoria, id]);
-      const dataAnimals: any = Object.values(JSON.parse(JSON.stringify(data)));
-      return dataAnimals;
+      console.log(data.changedRows);
+      if (data.changedRows>0) {
+        return "Elemto modificado"
+      } else {
+        return " Elemento no encontrado"
+      }     
     } catch (error) {
       console.error(error);
       return null;

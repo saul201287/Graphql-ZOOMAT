@@ -9,6 +9,6 @@ export interface AnimalsRepository {
   putAnimalCategory(
     id: number,
     categoria: string
-  ): Promise<Animals | null>;
+  ): Promise<String | null>;
   deleteAnimal(id: number): Promise<string | null>
 }

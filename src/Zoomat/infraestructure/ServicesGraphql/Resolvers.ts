@@ -26,7 +26,11 @@ export class Resolvers {
   resolvers: any = {
     Query: {
       user: async (__:void,args:any) => {
+        console.log(args);
+        
         const user = await this.getUserUseCase.run(args.usuario, args.password);
+        console.log(user);
+        
         return user;
       },
       users:async () => {
@@ -37,14 +41,16 @@ export class Resolvers {
       },
       animals: async () => {
         const animals = await this.getAllAnimals.run();
-        return animals;
+        return {msg:animals};
       },
       animal: async (__: void, args: any) => {
-        const animal = await this.getByIdAnimal.run(args.id);
+        const [animal]:any = await this.getByIdAnimal.run(args.id);
+        
         return animal;
       },
       animalByEspecie: async (__: void, args: any) => {
-        const animal = await this.getAnimalByEspecie.run(args.especie);
+        const [animal]:any = await this.getAnimalByEspecie.run(args.especie);
+        console.log(animal);
         return animal;
       },
     },
@@ -61,18 +67,17 @@ export class Resolvers {
           args.animal.distribucion,
           args.animal.categoria
         );
-        console.log(animalNew,"ssas");
-
         const animal = await this.createAnimal.run(animalNew);
         return animal;
       },
       createUser: async(__: void, args: any) => {
+        
         const user = await this.createUser.run(
-          args.nobre,
-          args.password,
-          args.usuario,
-          args.correo
-        );
+          args.user.nombre,
+          args.user.password,
+          args.user.usuario,
+          args.user.correo
+        );        
         return user;
       },
       putAnimalEdad: async (__: void, args: any) => {
@@ -80,7 +85,7 @@ export class Resolvers {
         return animal;
       },
       putAnimalCategory: async (__: void, args: any) => {
-        const animal = await this.putAnimalCategory.run(args.id, args.categoria);
+        const animal = await this.putAnimalCategory.run(args.animal.id, args.animal.categoria);
         return animal;
       },
       deleteAnimal: async (__: void, args: any) => {

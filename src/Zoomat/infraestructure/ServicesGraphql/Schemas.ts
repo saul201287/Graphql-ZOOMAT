@@ -53,7 +53,7 @@ type Mutation{
     createAnimal(animal:animalInput):Animal
     createUser(user: userInput):User
     putAnimalEdad(animal:animalEdadInput):Animal
-    putAnimalCategory(animal:animalPutInput):Animal
+    putAnimalCategory(animal:animalPutInput):String
     deleteAnimal(id:Int):String
 }
 `;

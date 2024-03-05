@@ -8,10 +8,14 @@ export class MysqlUserRepository implements UserRepository {
     password: string
   ): Promise<[User[], string] | null> {
     const sql = "SELECT * FROM usuarios where usuario= ? ";
-    let params: any[] = [usuario];
+    let params: any[] = [usuario];    
     try {
-      const [data]: any = await query(sql, params);
+      const data = await query(sql, params);
+      console.log(data?.[0]);
+      
       const dataUsers : any = Object.values(JSON.parse(JSON.stringify(data)));
+      console.log(dataUsers);
+      
       return dataUsers
     } catch (error) {
       console.log(error);
