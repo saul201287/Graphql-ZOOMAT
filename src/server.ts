@@ -23,7 +23,10 @@ const options = {
 const logger = new Signale(options);
 //const port: number | undefined = process.env.PORT;
 let resolvers = ResolversGraph.resolvers;
-const server = new ApolloServer({
+interface MyContext {
+  authScope?: String;
+}
+const server = new ApolloServer<MyContext>({
   typeDefs,
   resolvers,
 });
@@ -31,6 +34,9 @@ const server = new ApolloServer({
 (async () => {
   const { url } = await startStandaloneServer(server, {
     listen: { port: 4000 },
+    context: async ({ req, res }) => ({
+      authScope: (req.headers.authorization)?.toString(),
+    }),
   });
   console.log(`servidor corriendo en ${url}`);
 })();
