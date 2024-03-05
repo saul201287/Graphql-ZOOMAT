@@ -8,7 +8,6 @@ export class ServicesAuth {
       const token = await this.webToken.verifyToken(usuario);
       return token;
     } catch (error) {
-        console.log(error);
       return null;
     }
   }

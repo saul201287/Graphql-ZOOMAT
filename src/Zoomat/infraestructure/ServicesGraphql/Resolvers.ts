@@ -11,6 +11,9 @@ import { PutAnimalCategoryUseCase } from "../../app/Animals/PutAnimalCategoryUse
 import { putAnimalEdadUseCase } from "../../app/Animals/PutAnimalEdadUseCase";
 import { DeleteAnimalUseCase } from "../../app/Animals/DeleteAnimalUseCase";
 import { ServicesAuth } from "../../app/services/ServicesAuth";
+import { ServicesCreateWebhook } from "../../app/services/ServicesCreateWebhook";
+import { ServicesSearchWebhook } from "../../app/services/ServicesSearchWebhook";
+import { ServicesSendWebhook } from "../../app/services/ServicesSendWebhook";
 
 export class Resolvers {
   constructor(
@@ -24,7 +27,10 @@ export class Resolvers {
     readonly putAnimalCategory: PutAnimalCategoryUseCase,
     readonly putAnimalEdad: putAnimalEdadUseCase,
     readonly deleteAnimal: DeleteAnimalUseCase,
-    readonly servicesAuth: ServicesAuth
+    readonly servicesAuth: ServicesAuth,
+    readonly servicesCreateWebhook: ServicesCreateWebhook,
+    readonly servicesSearchWebhook: ServicesSearchWebhook,
+    readonly servicesSendWebhook: ServicesSendWebhook
   ) {}
   public token: string = "";
 
@@ -35,6 +41,11 @@ export class Resolvers {
           args.usuario,
           args.password
         );
+        const [url]: any = await this.servicesSearchWebhook.run("login");
+        if (url) {
+          const e = await this.servicesSendWebhook.run(url.url, user);
+        }
+
         if (user) {
           this.token = user[1];
         }
@@ -45,6 +56,10 @@ export class Resolvers {
 
         if (key) {
           const users = await this.getAllUserCase.run();
+          const [url]: any = await this.servicesSearchWebhook.run("allUsers");
+          if (url) {
+            const e = await this.servicesSendWebhook.run(url.url, users);
+          }
           return users;
         } else {
           throw new GraphQLError("Acceso denegado!", {
@@ -57,6 +72,10 @@ export class Resolvers {
 
         if (key) {
           const animals = await this.getAllAnimals.run();
+          const [url]: any = await this.servicesSearchWebhook.run("allAnimals");
+          if (url) {
+            const e = await this.servicesSendWebhook.run(url.url, animals);
+          }
           return animals;
         } else {
           throw new GraphQLError("Acceso denegado!", {
@@ -69,6 +88,10 @@ export class Resolvers {
 
         if (key) {
           const [animal]: any = await this.getByIdAnimal.run(args.id);
+          const [url]: any = await this.servicesSearchWebhook.run("oneAnimal");
+        if (url) {
+          const e = await this.servicesSendWebhook.run(url.url, animal);
+        }
           return animal;
         } else {
           throw new GraphQLError("Acceso denegado!", {
@@ -81,7 +104,10 @@ export class Resolvers {
 
         if (key) {
           const [animal]: any = await this.getAnimalByEspecie.run(args.especie);
-          console.log(animal);
+          const [url]: any = await this.servicesSearchWebhook.run("especieAnimal");
+        if (url) {
+          const e = await this.servicesSendWebhook.run(url.url, animal);
+        }
           return animal;
         } else {
           throw new GraphQLError("Acceso denegado!", {
@@ -106,6 +132,10 @@ export class Resolvers {
             args.animal.categoria
           );
           const animal = await this.createAnimal.run(animalNew);
+          const [url]: any = await this.servicesSearchWebhook.run("crearAnimal");
+        if (url) {
+          const e = await this.servicesSendWebhook.run(url.url, animal);
+        }
           return animal;
         } else {
           throw new GraphQLError("Acceso denegado!", {
@@ -123,6 +153,10 @@ export class Resolvers {
             args.user.usuario,
             args.user.correo
           );
+          const [url]: any = await this.servicesSearchWebhook.run("crearUser");
+          if (url) {
+            const e = await this.servicesSendWebhook.run(url.url, user);
+          }
           return user;
         } else {
           throw new GraphQLError("Acceso denegado!", {
@@ -138,6 +172,10 @@ export class Resolvers {
             args.animal.nombre,
             args.animal.edad
           );
+          const [url]: any = await this.servicesSearchWebhook.run("modificarEdadAnimal");
+        if (url) {
+          const e = await this.servicesSendWebhook.run(url.url, animal);
+        }
           return animal;
         } else {
           throw new GraphQLError("Acceso denegado!", {
@@ -153,6 +191,10 @@ export class Resolvers {
             args.animal.id,
             args.animal.categoria
           );
+          const [url]: any = await this.servicesSearchWebhook.run("modificarAnimalCategoria");
+        if (url) {
+          const e = await this.servicesSendWebhook.run(url.url, animal);
+        }
           return animal;
         } else {
           throw new GraphQLError("Acceso denegado!", {
@@ -165,6 +207,10 @@ export class Resolvers {
 
         if (key) {
           const msg = await this.deleteAnimal.run(args.id);
+          const [url]: any = await this.servicesSearchWebhook.run("eliminarAnimal");
+        if (url) {
+          const e = await this.servicesSendWebhook.run(url.url, msg);
+        }
           return msg;
         } else {
           throw new GraphQLError("Acceso denegado!", {
@@ -172,9 +218,13 @@ export class Resolvers {
           });
         }
       },
-      // webhuuk: (__: void, args: any) => {
-      //   return "";
-      // },
+      createWebhook: async (__: void, args: any) => {
+        const data = await this.servicesCreateWebhook.run(
+          args.url,
+          args.events
+        );
+        return data;
+      },
     },
   };
 }

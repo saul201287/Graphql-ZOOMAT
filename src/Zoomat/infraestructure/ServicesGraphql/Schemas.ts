@@ -56,6 +56,7 @@ input animalEdadInput{
 type Mutation{
     createAnimal(animal:animalInput):Animal
     createUser(user: userInput):User
+    createWebhook(url:String, events:[String]):String
     putAnimalEdad(animal:animalEdadInput):String
     putAnimalCategory(animal:animalPutInput):String
     deleteAnimal(id:Int):String

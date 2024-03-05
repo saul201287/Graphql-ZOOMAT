@@ -17,9 +17,15 @@ import { CreateUserController } from "./controllers/CreateUserController";
 import { GetUserController } from "./controllers/GetUserController";
 import { Resolvers } from "./ServicesGraphql/Resolvers";
 import { ServicesAuth } from "../app/services/ServicesAuth";
+import { MysqlWebhookRepository } from "./MysqlWebhook";
+import { ServicesCreateWebhook } from "../app/services/ServicesCreateWebhook";
+import { ServicesSendWebhook } from "../app/services/ServicesSendWebhook";
+import { ServicesSearchWebhook } from "../app/services/ServicesSearchWebhook";
 
 const mysqlUsertRepository = new MysqlUserRepository();
 const mysqlAnimalRepository = new MysqlAnimalRepository();
+const mysqlWebhookRepository = new MysqlWebhookRepository()
+
 const servicesEncrypt = new EncryptServices();
 const webTokens = new ServicesTokens();
 
@@ -47,6 +53,9 @@ const deleteAnimalUseCase = new DeleteAnimalUseCase(mysqlAnimalRepository);
 const getAnimalsByEspecieUseCase = new GetAnimalByEspecieUseCase(
   mysqlAnimalRepository
 );
+const servicesCreateWebhook = new ServicesCreateWebhook(mysqlWebhookRepository)
+const servicesSearchWebhook = new ServicesSearchWebhook(mysqlWebhookRepository);
+const servicesSendWebhook = new ServicesSendWebhook(mysqlWebhookRepository)
 
 export const ResolversGraph = new Resolvers(
   getUserUseCase,
@@ -59,7 +68,10 @@ export const ResolversGraph = new Resolvers(
   putAnimalCategoryUseCase,
   putanimalEdadUseCase,
   deleteAnimalUseCase,
-  servicesAuth
+  servicesAuth,
+  servicesCreateWebhook,
+  servicesSearchWebhook,
+  servicesSendWebhook
 );
 export const getUserController = new GetUserController(getUserUseCase);
 export const createUserController = new CreateUserController(createUserUseCase);
